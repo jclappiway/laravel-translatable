@@ -170,7 +170,9 @@ trait Translatable
 
         $usePropertyFallback = $this->useFallback() && $this->usePropertyFallback();
         if (empty($value) && $usePropertyFallback) {
-            return $this->getTranslation($this->getFallbackLocale(), true)->$attribute;
+            $translation = $this->getTranslation($this->getFallbackLocale(), true);
+            //avoid null->attribute with dynamic attributes (mongodb)
+            return $translation ? $translation->$attribute : '';
         }
 
         return $value;
